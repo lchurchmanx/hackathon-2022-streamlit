@@ -1,0 +1,12 @@
+pandas==1.3.5
+streamlit_pandas_profiling
+streamlit
+matplotlib
+pandas_profiling
+seaborn
+plotly
+watchdog
+iso3166
+xgboost
+st-btn-select
+category-encoders
