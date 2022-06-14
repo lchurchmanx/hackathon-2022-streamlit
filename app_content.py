@@ -110,10 +110,10 @@ def loan_scoring():
         st.write('')
 
         for x in df.itertuples():
-            st.write(f"Weighted trend for Merchant **{x.MERCHANT_NAME}** ({x.MERCHANT_ID}): {x.SCORE}")
+            st.write(f"Merchant **{x.MERCHANT_NAME}** ({x.MERCHANT_ID}): {x.SCORE}")
             display_score(x.SCORE)
 
-            st.write(f"Recommendation: {recommend_approval(loan[0], x.SCORE)}")
+            st.write(f"Recommendation: **{recommend_approval(loan[0], x.SCORE)}**")
 
     # st.write(df.astype(str))
 
@@ -131,10 +131,10 @@ def display_score(val):
 def recommend_approval(loan, score):
     print(loan, score)
     if loan == LOAN_SMALL:
-        return "Approve loan"
+        return "Approved"
     if loan == LOAN_MEDIUM and score > 1:
-        return "Approve loan"
+        return "Approved"
     if loan == LOAN_LARGE and score >=2:
-        return "Approve loan"
-    return "Do not approve loan"
+        return "Approved"
+    return "Denied"
 
