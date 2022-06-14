@@ -7,6 +7,8 @@ from PIL import Image
 from matplotlib import pyplot as plt
 import seaborn as sns
 from app_variables import *
+import plotly.graph_objects as go
+import plotly.express as px
 
 LOAN_SMALL = 'Less than 20K'
 LOAN_MEDIUM = '20- 50K'
@@ -107,6 +109,16 @@ def set_feature_importance():
     ds = load_csv(path_feature_importance)
     st.markdown(f'{len(ds.index)} entries  |  {len(ds.columns)} columns')
     st.write(ds.astype(str))
+
+    st.markdown('### Review Feature Importance')
+    df_bar_commodity = ds.groupby('name')['score'].agg(['mean']).reset_index()
+    df_bar_commodity.rename(columns={'mean': 'feature_importance'}, inplace=True)
+    fig = px.bar(df_bar_commodity.sort_values(by='feature_importance', ascending=False).iloc[:10],
+                 x="feature_importance",
+                 y="name",
+                 color="name")
+    fig.update_layout(showlegend=False)
+    st.plotly_chart(fig, use_container_width=True)
 
 
 
