@@ -21,13 +21,6 @@ def set_home():
     st.write(intro, unsafe_allow_html=True)
     st.write(intro_context, unsafe_allow_html=True)
 
-    image = Image.open('images/Low.png')
-    st.image(image, width=250)
-    image = Image.open('images/Medium.png')
-    st.image(image, width=250)
-    image = Image.open('images/High.png')
-    st.image(image, width=250)
-
 
 def preview_data():
     st.title('Data Preview')
@@ -75,18 +68,7 @@ def loan_scoring():
 
     st.markdown('# Loan Score')
 
-    # dataset = load_parquet(path_ranking_dataset)
     dataset = load_csv(path_scoring_dataset)
-
-    # print(dataset.columns)
-    # Index(['MCC', 'MERCHANT_ID', 'ZIPCODE', 'BILLING_STATE', 'CITY', 'POPULATION',
-    #        'MERCHANT_NAME', 'MCC_CATEGORY', 'MCC_DESC', 'TOT_SALES2021',
-    #        'TOT_SALES2020', 'TOT_SALES2019', 'TOT_SALE_CNT2021',
-    #        'TOT_SALE_CNT2020', 'TOT_SALES_CNT2019', 'DIFF_AMT', 'DIFF_CNT',
-    #        'AVG_SALES', 'SALES_TREND_1', 'SALES_TREND_2', 'AVG_SALES_CNT',
-    #        'SALES_CNT_TREND_1', 'SALES_CNT_TREND_2', 'SALES_TREND_WEIGHTED',
-    #        'SALE_CNT_TREND_WEIGHTED', 'TREND_WEIGHTED', 'TREND_RANKING'],
-    #       dtype='object')
 
     col1, col2, col3, col4, col5 = st.columns((.1, 1, .1, 1, .1))
 
@@ -104,39 +86,6 @@ def loan_scoring():
         ]
         df = df.query(f'CITY == "{city[0]}"')
 
-        # merchant_df = load_csv(path_merchant_dataset)
-        # ids = [np.int64(x.MERCHANT_ID) for x in df.itertuples()]
-        # filter1 = merchant_df["MERCHANT_ID"].isin(ids)
-        # merchant_df = merchant_df[filter1]
-        # st.write(merchant_df.astype(str))
-        # print(merchant_df)
-
-        # print(merchant_df.dtypes)
-
-        # score_df = load_csv(path_scoring_dataset)
-        # filter1 = score_df["MERCHANT_ID"].isin(['4445090630228', '4445028703157'])
-        # score_df = score_df[filter1]
-        # st.write('another')
-        # st.write(score_df.astype(str))
-        # #
-        # score_df = load_csv(path_merchant_dataset)
-        # print("TEST")
-        # print(ids)
-        # print([4445028768606])
-        # filter1 = score_df["MERCHANT_ID"].isin(ids) # takeb from file
-        # filter2 = score_df["MERCHANT_ID"].isin([4445028768606]) # takeb from file
-        #
-        # st.write('FILTER1')
-        # score_df1 = score_df[filter1]
-        # st.write(score_df1.astype(str))
-        #
-        # st.write('FILTER2')
-        # score_df2 = score_df[filter2]
-        # st.write(score_df2.astype(str))
-
-        # print(merchant_df)
-        # print(merchant_df.MERCHANT_NAME.unique())
-
         merchant = [
             st.selectbox('merchant',
                          [x for x in sorted(df.MERCHANT_NAME.unique())],
@@ -149,40 +98,25 @@ def loan_scoring():
                          key='loan')
         ]
 
-        # df = df.query(f'MERCHANT_NAME == "{merchant[0]}"')
-        score = 'TBD'
+        df = df.query(f'MERCHANT_NAME == "{merchant[0]}"')
 
-    #     score_df = load_csv(path_scoring_dataset)
-    #     ids = [str(x.MERCHANT_ID) for x in df.itertuples()]
-    #     # score_df = score_df.query(f'MERCHANT_ID == "4445026458620"') # (4445028703132, 4445028703157)')
-    #
-    #     print(ids)
-    #
-    #     # filter1 = score_df["MERCHANT_ID"].isin([ids])
-    #     # filter1 = score_df["MERCHANT_ID"].isin(['4445028703132', '4445028703157'])
-    #     filter1 = score_df["MERCHANT_ID"].isin(['4445090630228', '4445028703157'])
-    #     score_df = score_df[filter1]
-    #
-    #     st.write(score_df.astype(str))
-    #
-    # with col4:
-    #     # st.write('')
-    #     st.markdown(f'### Results')
-    #     st.write('')
-    #
-    #     for x in df.itertuples():
-    #         # st.write(f"Weighted trend for Merchant ID **{x.MERCHANT_ID}**: {x.TREND_WEIGHTED}")
-    #         st.write(f"Weighted trend for Merchant **{x.MERCHANT_NAME}** ({x.MERCHANT_ID}): {x.TREND_WEIGHTED}")
-    #         display_score(x.TREND_WEIGHTED)
+    with col4:
+        # st.write('')
+        st.markdown(f'### Results')
+        st.write('')
 
-    st.write(df.astype(str))
+        for x in df.itertuples():
+            st.write(f"Weighted trend for Merchant **{x.MERCHANT_NAME}** ({x.MERCHANT_ID}): {x.SCORE}")
+            display_score(x.SCORE)
+
+    # st.write(df.astype(str))
 
 
 def display_score(val):
-    if val < 0:
+    if val < 1:
         image = Image.open('images/Low.png')
-    elif val < 50:
+    elif val < 2:
         image = Image.open('images/Medium.png')
-    elif val >= 50:
+    elif val >= 2:
         image = Image.open('images/High.png')
     st.image(image, width=250)
