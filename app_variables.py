@@ -8,6 +8,15 @@ path_agg = './data/agg_data.csv'
 path_merchant = './data/merchant_data.csv'
 path_banking = './data/banking_data.csv'
 path_feature_importance = './data/feature_importance_output.csv'
+blah = './data/Data_World.csv'
+
+
+LOAN_SMALL = 'Less than 20K'
+LOAN_MEDIUM = '20- 50K'
+LOAN_LARGE = '50K-120K'
+
+
+MERCHANT_SUBSET = ["4445000986976", "4445024609222", "529000243688"]
 
 intro = '''
 # Background 

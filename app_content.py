@@ -1,16 +1,9 @@
 import os
 
-import numpy as np
 import pandas as pd
-import streamlit as st
-from PIL import Image
 from matplotlib import pyplot as plt
 import seaborn as sns
-from app_variables import *
-
-LOAN_SMALL = 'Less than 20K'
-LOAN_MEDIUM = '20- 50K'
-LOAN_LARGE = '50K-120K'
+from loan_scoring import *
 
 
 def load_csv(path):
@@ -109,10 +102,9 @@ def set_feature_importance():
     st.write(ds.astype(str))
 
 
-
 def set_data_exploration():
     global selected_column_country_year, selected_column_commodity_year
-    dataset = load_csv('')
+    dataset = load_csv(blah)
 
     st.markdown('# Basic Statistics')
     st.markdown('### Review descriptive statistics for `loss_percentage`')
@@ -285,7 +277,8 @@ def preview_data():
     st.markdown('### DataFrame `Merged Data`')
     ds = load_parquet(path_merge_data_dataset)
     st.markdown(f'{len(ds.index)} entries  |  {len(ds.columns)} columns')
-    st.write(ds.astype(str))
+    st.markdown('# FIXME NOT DISPLAYING DATAFRAME')
+    # st.write(ds.astype(str))
 
     st.markdown('### DataFrame `Bank Data`')
     st.markdown(
@@ -307,72 +300,6 @@ def in_progress():
 
 
 def loan_scoring():
-
-    st.markdown('# Loan Score')
-
-    dataset = load_csv(path_scoring_dataset)
-
-    col1, col2, col3, col4, col5 = st.columns((.1, 1, .1, 1, .1))
-
-    with col2:
-        state = [
-            st.selectbox('state',
-                         [x for x in dataset.BILLING_STATE.unique()],
-                         key='billing_state')]
-        df = dataset.query(f'BILLING_STATE == "{state[0]}"')
-
-        city = [
-            st.selectbox('city',
-                         [x for x in sorted(df.CITY.unique())],
-                         key='city')
-        ]
-        df = df.query(f'CITY == "{city[0]}"')
-
-        merchant = [
-            st.selectbox('merchant',
-                         [x for x in sorted(df.MERCHANT_NAME.unique())],
-                         key='merchant')
-        ]
-
-        loan = [
-            st.selectbox('loan',
-                         [LOAN_SMALL, LOAN_MEDIUM, LOAN_LARGE],
-                         key='loan')
-        ]
-
-        df = df.query(f'MERCHANT_NAME == "{merchant[0]}"')
-
-    with col4:
-        # st.write('')
-        st.markdown(f'### Results')
-        st.write('')
-
-        for x in df.itertuples():
-            st.write(f"Merchant **{x.MERCHANT_NAME}** ({x.MERCHANT_ID}): {x.SCORE}")
-            display_score(x.SCORE)
-
-            st.write(f"Recommendation: **{recommend_approval(loan[0], x.SCORE)}**")
-
-    # st.write(df.astype(str))
-
-
-def display_score(val):
-    if val < 1:
-        image = Image.open('images/Low.png')
-    elif val < 2:
-        image = Image.open('images/Medium.png')
-    elif val >= 2:
-        image = Image.open('images/High.png')
-    st.image(image, width=250)
-
-
-def recommend_approval(loan, score):
-    print(loan, score)
-    if loan == LOAN_SMALL:
-        return "Approved"
-    if loan == LOAN_MEDIUM and score > 1:
-        return "Approved"
-    if loan == LOAN_LARGE and score >=2:
-        return "Approved"
-    return "Denied"
+    loan_scoring_limited(load_csv)  # only choose between a subset of merchants
+    # loan_scoring_all_data(load_csv)  # this is the full form to choose state/city/merchant
 
