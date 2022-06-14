@@ -7,6 +7,10 @@ from PIL import Image
 
 from app_variables import *
 
+LOAN_SMALL = 'Less than 20K'
+LOAN_MEDIUM = '20- 50K'
+LOAN_LARGE = '50K-120K'
+
 
 def load_csv(path):
     dataset = pd.read_csv(os.path.join(path))
@@ -94,7 +98,7 @@ def loan_scoring():
 
         loan = [
             st.selectbox('loan',
-                         ['Less than 20K', '20- 50K', '50K-120K'],
+                         [LOAN_SMALL, LOAN_MEDIUM, LOAN_LARGE],
                          key='loan')
         ]
 
@@ -109,6 +113,8 @@ def loan_scoring():
             st.write(f"Weighted trend for Merchant **{x.MERCHANT_NAME}** ({x.MERCHANT_ID}): {x.SCORE}")
             display_score(x.SCORE)
 
+            st.write(f"Recommendation: {recommend_approval(loan[0], x.SCORE)}")
+
     # st.write(df.astype(str))
 
 
@@ -120,3 +126,15 @@ def display_score(val):
     elif val >= 2:
         image = Image.open('images/High.png')
     st.image(image, width=250)
+
+
+def recommend_approval(loan, score):
+    print(loan, score)
+    if loan == LOAN_SMALL:
+        return "Approve loan"
+    if loan == LOAN_MEDIUM and score > 1:
+        return "Approve loan"
+    if loan == LOAN_LARGE and score >=2:
+        return "Approve loan"
+    return "Do not approve loan"
+
