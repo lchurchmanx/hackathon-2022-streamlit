@@ -1,8 +1,15 @@
+path_bank_dataset = './data/ETHOS_INGESTION_AUDIT_BANK_TOT_TRANS.csv'
+path_merchant_dataset = './data/ETHOS_INGESTION_AUDIT_MERCH_TOT_TRANS.csv'
+path_ranking_dataset = 'data/ranking_data.parquet'
 path_dataset = './data/Data_World.csv'
 path_gdp = './data/gdp.csv'
 path_gdp_per_capita = './data/gdppc.csv'
 
 intro = '''
+# Background 
+
+'''
+intro_OLD = '''
 # Background of the Food Loss and Waste Database
 ##### Sustainable Development Goal Indicator 12.3 states “By 2030, to halve per capita global food waste at the retail and consumer levels and reduce food losses along production and supply chains, including post-harvest losses.”
 ##### To help monitor the state of food loss, FAO conducted an extensive review of literature in the public domain which gathered data and information from almost 500 publications, reports, and studies from various sources (including from organizations like the World Bank, GIZ, FAO, IFPRI, and more).
@@ -11,6 +18,9 @@ intro = '''
 
 
 intro_context = '''
+## Context
+'''
+intro_context_OLD = '''
 ## Food Loss and Waste Database
 #### Take an in-depth look at what food is being lost and wasted, and where
 ##### The Food Loss and Waste database is the largest online collection of data on both food loss and food waste and causes reported throughout the literature. The database contains data and information from openly accessible reports and studies measuring food loss and waste across food products, stages of the value chain, and geographical areas. In October 2019, more than 480 publications and reports from various sources (e.g., subnational reports, academic studies, and reports from national and international organizations such as the World Bank, GIZ, FAO, IFPRI, and other sources), which have produced more than 20 thousand data points, were included. Data can be queried, downloaded, and plotted in an interactive and structured way. The database can be used by anyone who wishes to know more about food losses and waste.
