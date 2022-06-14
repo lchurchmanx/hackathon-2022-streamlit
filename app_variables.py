@@ -4,6 +4,10 @@ path_ranking_dataset = './data/ranking_data.parquet'
 path_modeling_merchant_dataset = './data/data_modeling_merchant.parquet'
 path_merge_data_dataset = './data/merge_data.parquet'
 path_scoring_dataset = './data/scoring_report_output.csv'
+path_agg = './data/agg_data.csv'
+path_merchant = './data/merchant_data.csv'
+path_banking = './data/banking_data.csv'
+path_feature_importance = './data/feature_importance_output.csv'
 
 intro = '''
 # Background 
