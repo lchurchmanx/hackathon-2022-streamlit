@@ -13,10 +13,11 @@ menu = st.sidebar.selectbox(
     ["Intro",
      "Data Preview",
      "Loan Score",
+     "Data Exploration",
      "Data Quality",
      # "Data Quality",
      "Feature Importance",
-     "Data Exploration",
+
      # "Data Map Plot",
      # "Data Relationship",
      # "Feature Importance and Prediction"
