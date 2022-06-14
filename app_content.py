@@ -27,16 +27,11 @@ def set_home():
     st.write(intro_context, unsafe_allow_html=True)
 
 
-def set_data_quality(dataset):
-    if dataset == 'AGG':
-        dataset = load_csv(path_agg)
-    elif dataset == 'BANKING':
-        dataset = load_csv(path_banking)
-    elif dataset == 'MERCHANT':
-        dataset = load_csv(path_merchant)
-
-
+def set_data_quality():
     st.markdown('# Data Quality')
+    st.markdown('### Quick glance on all the source data and review data quality')
+    st.markdown('#### Merchant Data')
+    dataset = load_csv(path_merchant)
 
     numerical = dataset.select_dtypes(include=['number', 'bool', 'datetime64[ns]', 'timedelta64'])
     st.table(pd.DataFrame([[dataset.shape[0], dataset.shape[1],
@@ -57,6 +52,51 @@ def set_data_quality(dataset):
         st.write("There are", str(duplicatedRows_count), "duplicated rows in the dataset:",
                  dataset[dataset.duplicated()])
     st.write("---")
+    st.markdown('#### Banking Data')
+
+    dataset = load_csv(path_banking)
+
+    numerical = dataset.select_dtypes(include=['number', 'bool', 'datetime64[ns]', 'timedelta64'])
+    st.table(pd.DataFrame([[dataset.shape[0], dataset.shape[1],
+                            (dataset.shape[1] - numerical.shape[1]), numerical.shape[1]]],
+                          columns=["Row Count", "Column Count", "Nominal Column Count",
+                                   "Numeric Column Count"], index=[""]))
+    useless = dataset[dataset.isnull().sum(axis=1) > (dataset.shape[1] / 2)]
+    uselessRows_count = useless.shape[0]
+    if uselessRows_count > 0:
+        st.write(str(uselessRows_count), "rows may be useless:", useless)
+        st.write("")
+
+    duplicated = dataset[dataset.duplicated()]
+    duplicatedRows_count = duplicated.shape[0]
+    if duplicatedRows_count == 0:
+        st.success("There is no duplicated rows in the dataset.")
+    else:
+        st.write("There are", str(duplicatedRows_count), "duplicated rows in the dataset:",
+                 dataset[dataset.duplicated()])
+
+    st.write("---")
+    st.markdown('#### AGG Data')
+    dataset = load_csv(path_agg)
+
+    numerical = dataset.select_dtypes(include=['number', 'bool', 'datetime64[ns]', 'timedelta64'])
+    st.table(pd.DataFrame([[dataset.shape[0], dataset.shape[1],
+                            (dataset.shape[1] - numerical.shape[1]), numerical.shape[1]]],
+                          columns=["Row Count", "Column Count", "Nominal Column Count",
+                                   "Numeric Column Count"], index=[""]))
+    useless = dataset[dataset.isnull().sum(axis=1) > (dataset.shape[1] / 2)]
+    uselessRows_count = useless.shape[0]
+    if uselessRows_count > 0:
+        st.write(str(uselessRows_count), "rows may be useless:", useless)
+        st.write("")
+
+    duplicated = dataset[dataset.duplicated()]
+    duplicatedRows_count = duplicated.shape[0]
+    if duplicatedRows_count == 0:
+        st.success("There is no duplicated rows in the dataset.")
+    else:
+        st.write("There are", str(duplicatedRows_count), "duplicated rows in the dataset:",
+                 dataset[dataset.duplicated()])
 
 
 def set_feature_importance():

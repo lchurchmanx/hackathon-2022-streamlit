@@ -13,9 +13,7 @@ menu = st.sidebar.selectbox(
     ["Intro",
      "Data Preview",
      "Loan Score",
-     "Data Quality - Merchant Data",
-     "Data Quality - Banking Data",
-     "Data Quality - AGG Data",
+     "Data Quality",
      # "Data Quality",
      "Feature Importance",
      "Data Exploration",
@@ -31,12 +29,8 @@ if menu == 'Intro':
     set_home()
 elif menu == 'Data Preview':
     preview_data()
-elif menu == 'Data Quality - Merchant Data':
-    set_data_quality("MERCHANT")
-elif menu == 'Data Quality - Banking Data':
-    set_data_quality("BANKING")
-elif menu == 'Data Quality - AGG Data':
-    set_data_quality("AGG")
+elif menu == 'Data Quality':
+    set_data_quality()
 # elif menu == 'Data Overview':
 #     set_data_overview()
 elif menu == 'Data Exploration':
