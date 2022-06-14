@@ -111,7 +111,7 @@ def set_feature_importance():
     st.markdown(f'{len(ds.index)} entries  |  {len(ds.columns)} columns')
     st.write(ds.astype(str))
 
-    st.markdown('### Review Feature Importance with a bar chart')
+    st.markdown('### Review Feature Importance with a bar chart against target column `TOT_SALES2021`')
     df_bar_commodity = ds.groupby('name')['score'].agg(['mean']).reset_index()
     df_bar_commodity.rename(columns={'mean': 'feature_importance'}, inplace=True)
     fig = px.bar(df_bar_commodity.sort_values(by='feature_importance', ascending=False).iloc[:10],
@@ -283,33 +283,33 @@ def preview_data():
     st.title('Data Preview')
 
     st.markdown('### DataFrame `Scoring`')
-    ds = load_csv(path_scoring_dataset)
+    ds = load_csv(path_scoring_dataset).head(200)
     st.markdown(f'{len(ds.index)} entries  |  {len(ds.columns)} columns')
     st.write(ds.astype(str))
 
     st.markdown('### DataFrame `Ranking`')
-    ds = load_parquet(path_ranking_dataset)
+    ds = load_parquet(path_ranking_dataset).head(200)
     st.markdown(f'{len(ds.index)} entries  |  {len(ds.columns)} columns')
     st.write(ds.astype(str))
 
     st.markdown('### DataFrame `Merchant Modeling`')
-    ds = load_parquet(path_modeling_merchant_dataset)
+    ds = load_parquet(path_modeling_merchant_dataset).head(200)
     st.markdown(f'{len(ds.index)} entries  |  {len(ds.columns)} columns')
     st.write(ds.astype(str))
 
     st.markdown('### DataFrame `Merged Data`')
-    ds = load_parquet(path_merge_data_dataset)
+    ds = load_parquet(path_merge_data_dataset).head(200)
     st.markdown(f'{len(ds.index)} entries  |  {len(ds.columns)} columns')
     st.write(ds.astype(str))
 
     st.markdown('### DataFrame `Bank Data`')
     st.markdown(
         '')
-    dataset = load_csv(path_bank_dataset)
+    dataset = load_csv(path_bank_dataset).head(200)
     st.markdown(f'{len(dataset.index)} entries  |  {len(dataset.columns)} columns')
     st.write(dataset.astype(str))
 
-    ds = load_csv(path_merchant_dataset)
+    ds = load_csv(path_merchant_dataset).head(200)
     st.markdown('### DataFrame `Merchant Data`')
     st.markdown(
         '')
