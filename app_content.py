@@ -1,11 +1,7 @@
 import os
 
-from matplotlib import pyplot as plt
-import seaborn as sns
 from loan_scoring import *
-import plotly.graph_objects as go
 import plotly.express as px
-
 
 
 def load_csv(path):
@@ -113,6 +109,7 @@ def set_feature_importance():
                  color="name")
     fig.update_layout(showlegend=False)
     st.plotly_chart(fig, use_container_width=True)
+
 
 def set_data_exploration():
     global selected_column_country_year, selected_column_commodity_year
