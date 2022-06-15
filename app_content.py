@@ -1,6 +1,5 @@
 import os
 
-import pandas as pd
 from matplotlib import pyplot as plt
 import seaborn as sns
 from loan_scoring import *
@@ -315,6 +314,6 @@ def in_progress():
 
 
 def loan_scoring():
-    loan_scoring_limited(load_csv)  # only choose between a subset of merchants
-    # loan_scoring_all_data(load_csv)  # this is the full form to choose state/city/merchant
+    loan_scoring_limited(load_csv, load_parquet)  # only choose between a subset of merchants
+    # loan_scoring_all_data(load_csv, load_parquet)  # this is the full form to choose state/city/merchant
 

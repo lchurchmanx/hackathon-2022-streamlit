@@ -1,10 +1,14 @@
 import streamlit as st
+import pandas as pd
+import seaborn as sns
+
 from PIL import Image
+from matplotlib import pyplot as plt
 
 from app_variables import *
 
 
-def loan_scoring_all_data(load_func):
+def loan_scoring_all_data(load_func, load_parquet):
 
     st.markdown('# Loan Score')
 
@@ -51,10 +55,16 @@ def loan_scoring_all_data(load_func):
 
             st.write(f"Recommendation: **{recommend_approval(loan[0], x.SCORE)}**")
 
+    st.markdown('# Score Influences')
+    merchant_data = load_parquet(path_merge_data_dataset)
+    for x in df.itertuples():
+        # pass
+        score_influences(merchant_data, x.MERCHANT_NAME, x.MERCHANT_ID)
+        st.markdown('---')
     # st.write(df.astype(str))
 
 
-def loan_scoring_limited(load_csv):
+def loan_scoring_limited(load_csv, load_parquet):
 
     st.markdown('# Loan Score')
 
@@ -96,13 +106,54 @@ def loan_scoring_limited(load_csv):
 
         # st.write(f"Recommendation: **{recommend_approval(loan[0], x.SCORE)}**")
 
-    score_influences()
-
-    # st.write(df.astype(str))
-
-def score_influences():
     st.markdown('# Score Influences')
-    st.markdown('')
+    merchant_data = load_parquet(path_merge_data_dataset)
+    score_influences(merchant_data, merchant_name, merchant_id)
+
+
+def score_influences(merchant_data, merchant_name, merchant_id):
+    st.markdown(f'**{merchant_name}** ({merchant_id})')
+
+    merchant_data = merchant_data.query(f'MERCHANT_ID == "{merchant_id}"')
+    record = merchant_data.iloc[0]
+    print(record)
+
+    r1_col1, r1_col2 = st.columns(2)
+
+    with r1_col1:
+        st.markdown('### Total sales over 4 years')
+        # just hardcode the dates
+        new_df = pd.DataFrame({'merchant_id': [record['MERCHANT_ID'], record['MERCHANT_ID'], record['MERCHANT_ID'], record['MERCHANT_ID']],
+                               'year': ['2018', '2019', '2020', '2021'],
+                               'total_sales': [record['TOT_SALES2018'], record['TOT_SALES2019'], record['TOT_SALES2020'], record['TOT_SALES2021']]})
+        fig = plt.figure(figsize=(10, 4))
+        sns.lineplot(data=new_df, x="year", y="total_sales")
+        st.pyplot(fig)
+    with r1_col2:
+        st.markdown('### Total CNT over 4 years')
+        # just hardcode the dates
+        new_df = pd.DataFrame({'merchant_id': [record['MERCHANT_ID'], record['MERCHANT_ID'], record['MERCHANT_ID'], record['MERCHANT_ID']],
+                               'year': ['2018', '2019', '2020', '2021'],
+                               'total_cnt': [record['TOT_SALE_CNT2018'], record['TOT_SALES_CNT2019'], record['TOT_SALE_CNT2020'], record['TOT_SALE_CNT2021']]})
+        fig = plt.figure(figsize=(10, 4))
+        sns.lineplot(data=new_df, x="year", y="total_cnt")
+        st.pyplot(fig)
+
+    r2_col1, r2_col2 = st.columns(2)
+
+    with r2_col1:
+        st.markdown('### Population')
+        # just hardcode the dates
+        new_df = pd.DataFrame({'merchant_id': [record['MERCHANT_ID'], record['MERCHANT_ID'], record['MERCHANT_ID']],
+                               'year': ['2018', '2019', '2020'],
+                               'total_sales': [record['population_male_2018'] + record['population_female_2018'],
+                                               record['population_male_2019'] + record['population_female_2019'],
+                                               record['population_male_2020'] + record['population_female_2020']]})
+        fig = plt.figure(figsize=(10, 4))
+        sns.lineplot(data=new_df, x="year", y="total_sales")
+        st.pyplot(fig)
+    with r2_col2:
+        pass
 
 
 def display_score(val):
