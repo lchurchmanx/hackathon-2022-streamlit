@@ -274,6 +274,13 @@ def set_data_exploration():
 def preview_data():
     st.title('Data Preview')
 
+    image = Image.open('images/merchant analysis.PNG')
+    st.image(image)
+    image = Image.open('images/Top_50_states_FL.PNG')
+    st.image(image)
+    image = Image.open('images/trxn count over population.PNG')
+    st.image(image)
+
     st.markdown('### DataFrame `Scoring`')
     ds = load_csv(path_scoring_dataset).head(200)
     st.markdown(f'{len(ds.index)} entries  |  {len(ds.columns)} columns')
